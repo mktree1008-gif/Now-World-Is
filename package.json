@@ -9,16 +9,18 @@
     "lint": "next lint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "firebase:login": "npx firebase-tools login",
+    "firebase:rules": "npx firebase-tools deploy --only firestore:rules --project $NEXT_PUBLIC_FIREBASE_PROJECT_ID"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.8",
     "@radix-ui/react-dialog": "^1.1.15",
-    "@supabase/supabase-js": "^2.57.4",
     "@tanstack/react-query": "^5.89.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "d3-zoom": "^3.0.0",
+    "firebase": "^11.7.3",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.542.0",
     "next": "^15.5.3",

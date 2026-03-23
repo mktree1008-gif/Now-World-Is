@@ -1,12 +1,26 @@
 'use client';
 
-import {useEffect, useMemo, useState} from 'react';
-import type {Session, User} from '@supabase/supabase-js';
-import {getSupabaseBrowserClient} from '@/lib/supabase/browser';
+import {useEffect, useState} from 'react';
+import type {User} from 'firebase/auth';
+import {
+  GoogleAuthProvider,
+  browserLocalPersistence,
+  getRedirectResult,
+  isSignInWithEmailLink,
+  onAuthStateChanged,
+  sendSignInLinkToEmail,
+  setPersistence,
+  signInWithEmailLink,
+  signInWithPopup,
+  signInWithRedirect,
+  signOut as firebaseSignOut
+} from 'firebase/auth';
+import {getFirebaseAuthClient, isFirebaseConfigured} from '@/lib/firebase/client';
+
+const EMAIL_LINK_STORAGE_KEY = 'nwi_auth_email_link';
 
 type UseAuthState = {
   user: User | null;
-  session: Session | null;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
   signInWithMagicLink: (email: string) => Promise<{error?: string}>;
@@ -15,69 +29,77 @@ type UseAuthState = {
 
 export function useAuth(): UseAuthState {
   const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const supabase = useMemo(() => getSupabaseBrowserClient(), []);
-
   useEffect(() => {
-    if (!supabase) {
+    const auth = getFirebaseAuthClient();
+    if (!auth) {
       setLoading(false);
       return;
     }
 
-    supabase.auth
-      .getSession()
-      .then(({data}) => {
-        setSession(data.session);
-        setUser(data.session?.user ?? null);
-      })
-      .finally(() => setLoading(false));
+    setPersistence(auth, browserLocalPersistence).catch(() => undefined);
 
-    const {
-      data: {subscription}
-    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      setSession(nextSession);
-      setUser(nextSession?.user ?? null);
+    getRedirectResult(auth).catch(() => undefined);
+
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+      const savedEmail = window.localStorage.getItem(EMAIL_LINK_STORAGE_KEY) ?? window.prompt('Enter your email to continue');
+      if (savedEmail) {
+        signInWithEmailLink(auth, savedEmail, window.location.href)
+          .then(() => {
+            window.localStorage.removeItem(EMAIL_LINK_STORAGE_KEY);
+          })
+          .catch(() => undefined);
+      }
+    }
+
+    const unsubscribe = onAuthStateChanged(auth, (nextUser) => {
+      setUser(nextUser);
+      setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
-  }, [supabase]);
+    return () => unsubscribe();
+  }, []);
 
   return {
     user,
-    session,
     loading,
     signInWithGoogle: async () => {
-      if (!supabase) {
+      const auth = getFirebaseAuthClient();
+      if (!auth) {
         return;
       }
-      await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}${window.location.pathname}`
-        }
-      });
+
+      const provider = new GoogleAuthProvider();
+      try {
+        await signInWithPopup(auth, provider);
+      } catch {
+        await signInWithRedirect(auth, provider);
+      }
     },
     signInWithMagicLink: async (email: string) => {
-      if (!supabase) {
-        return {error: 'Supabase not configured'};
+      const auth = getFirebaseAuthClient();
+      if (!auth || !isFirebaseConfigured()) {
+        return {error: 'Firebase not configured'};
       }
 
-      const {error} = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: `${window.location.origin}${window.location.pathname}`
-        }
-      });
-
-      return error ? {error: error.message} : {};
+      try {
+        await sendSignInLinkToEmail(auth, email, {
+          url: `${window.location.origin}${window.location.pathname}`,
+          handleCodeInApp: true
+        });
+        window.localStorage.setItem(EMAIL_LINK_STORAGE_KEY, email);
+        return {};
+      } catch (error) {
+        return {error: error instanceof Error ? error.message : 'Unable to send magic link'};
+      }
     },
     signOut: async () => {
-      if (!supabase) {
+      const auth = getFirebaseAuthClient();
+      if (!auth) {
         return;
       }
-      await supabase.auth.signOut();
+      await firebaseSignOut(auth);
     }
   };
 }

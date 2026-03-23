@@ -1,8 +1,9 @@
 'use client';
 
 import useSWR from 'swr';
-import {useMemo} from 'react';
 import {useAuth} from '@/lib/hooks/use-auth';
+import {getFirebaseFirestoreClient, isFirebaseConfigured} from '@/lib/firebase/client';
+import {collection, deleteDoc, doc, getDocs, serverTimestamp, setDoc, Timestamp} from 'firebase/firestore';
 
 type FavoriteRow = {
   iso2: string;
@@ -10,59 +11,83 @@ type FavoriteRow = {
   note?: string | null;
 };
 
-async function apiFetch<T>(url: string, token: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, {
-    ...init,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-      ...(init?.headers ?? {})
-    }
-  });
+function toIsoString(value: unknown) {
+  if (value instanceof Timestamp) {
+    return value.toDate().toISOString();
+  }
+  if (value instanceof Date) {
+    return value.toISOString();
+  }
+  if (typeof value === 'string') {
+    return value;
+  }
+  return new Date(0).toISOString();
+}
 
-  const data = (await response.json()) as T & {error?: string};
-  if (!response.ok) {
-    throw new Error(data.error || 'Request failed');
+async function fetchFavoritesByUserId(userId: string): Promise<FavoriteRow[]> {
+  const db = getFirebaseFirestoreClient();
+  if (!db) {
+    return [];
   }
 
-  return data;
+  const favoritesRef = collection(db, 'users', userId, 'favorites');
+  const snapshot = await getDocs(favoritesRef);
+
+  return snapshot.docs
+    .map((item) => {
+      const data = item.data() as {iso2?: string; created_at?: unknown; note?: string | null};
+      return {
+        iso2: (data.iso2 ?? item.id).toUpperCase(),
+        created_at: toIsoString(data.created_at),
+        note: data.note ?? null
+      } satisfies FavoriteRow;
+    })
+    .sort((a, b) => b.created_at.localeCompare(a.created_at));
 }
 
 export function useFavorites() {
-  const {session, user} = useAuth();
-  const token = session?.access_token;
+  const {user} = useAuth();
+  const userId = user?.uid;
 
-  const key = useMemo<readonly [string, string] | null>(
-    () => (token ? ['/api/favorites', token] as const : null),
-    [token]
+  const {data, error, isLoading, mutate} = useSWR<FavoriteRow[]>(
+    userId ? ['firebase-favorites', userId] : null,
+    (_key: readonly [string, string]) => fetchFavoritesByUserId(_key[1])
   );
 
-  const {data, error, isLoading, mutate} = useSWR<{data: FavoriteRow[]}>(
-    key,
-    ([url, authToken]: readonly [string, string]) => apiFetch<{data: FavoriteRow[]}>(url, authToken)
-  );
-
-  const list = data?.data ?? [];
+  const list = data ?? [];
 
   return {
     favorites: list,
     favoriteSet: new Set(list.map((item) => item.iso2)),
     isLoading,
     error: error ? String(error) : null,
-    isEnabled: Boolean(user && token),
+    isEnabled: Boolean(user && isFirebaseConfigured()),
     toggleFavorite: async (iso2: string) => {
-      if (!token) {
+      if (!userId) {
         throw new Error('Login required');
       }
 
-      const exists = list.some((item) => item.iso2 === iso2);
+      const db = getFirebaseFirestoreClient();
+      if (!db) {
+        throw new Error('Firebase not configured');
+      }
+
+      const normalized = iso2.toUpperCase();
+      const exists = list.some((item) => item.iso2 === normalized);
+      const favoriteDocRef = doc(db, 'users', userId, 'favorites', normalized);
+
       if (exists) {
-        await apiFetch(`/api/favorites/${iso2}`, token, {method: 'DELETE'});
+        await deleteDoc(favoriteDocRef);
       } else {
-        await apiFetch('/api/favorites', token, {
-          method: 'POST',
-          body: JSON.stringify({iso2})
-        });
+        await setDoc(
+          favoriteDocRef,
+          {
+            iso2: normalized,
+            created_at: serverTimestamp(),
+            note: null
+          },
+          {merge: true}
+        );
       }
 
       await mutate();
