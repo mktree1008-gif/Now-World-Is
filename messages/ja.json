@@ -1,0 +1,85 @@
+{
+  "meta": {
+    "localeName": "English"
+  },
+  "common": {
+    "appName": "Now world is (NWI)",
+    "searchPlaceholder": "Search country, ISO code, region...",
+    "map": "Map",
+    "globe": "Globe",
+    "login": "Log in",
+    "logout": "Log out",
+    "profile": "Profile",
+    "settings": "Settings",
+    "favorites": "Favorites",
+    "compare": "Compare",
+    "language": "Language",
+    "loading": "Loading...",
+    "notAvailable": "Latest data unavailable",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "map": {
+    "hoverHint": "Hover or focus a country to preview. Tap on mobile.",
+    "sourceNote": "Economic indicators: World Bank (latest available year)",
+    "mobileHint": "Tap countries to open detail sheet",
+    "tooltipGdp": "GDP per capita",
+    "tooltipPpp": "PPP GDP per capita",
+    "tooltipYear": "Year",
+    "avgIq": "Average IQ"
+  },
+  "country": {
+    "heroRegion": "Region",
+    "heroCapital": "Capital",
+    "heroPopulation": "Population",
+    "economy": "Economy",
+    "gdp": "GDP per capita",
+    "ppp": "PPP GDP per capita",
+    "iq": "Average IQ",
+    "iqSource": "IQ source note",
+    "languages": "Languages",
+    "currency": "Currency",
+    "history": "History",
+    "politics": "Politics / Government",
+    "demographics": "Demographics",
+    "demographicsUnavailable": "Demographic data not consistently available",
+    "majorCities": "Major cities",
+    "photos": "Representative photos",
+    "photoUnavailable": "Photo unavailable",
+    "notes": "Notes"
+  },
+  "compare": {
+    "title": "Country Compare Lab",
+    "subtitle": "Select favorite countries and compare GDP, PPP, and IQ with chart + table.",
+    "countrySelection": "Country selection",
+    "metricSelection": "Metric selection",
+    "run": "Compare",
+    "lineChart": "Yearly Trend",
+    "table": "Yearly Table",
+    "iqStatic": "Average IQ comparison",
+    "iqStaticNote": "IQ is shown as a static benchmark (not yearly series).",
+    "noData": "No sufficient data to compare."
+  },
+  "favorites": {
+    "title": "Favorites",
+    "subtitle": "Pin countries and launch professional comparison workflows.",
+    "empty": "No favorite countries yet.",
+    "compareAction": "Open Compare"
+  },
+  "profile": {
+    "title": "Profile",
+    "signedInAs": "Signed in as",
+    "notSignedIn": "Not signed in",
+    "manage": "Manage account"
+  },
+  "settings": {
+    "title": "Settings",
+    "preferredLanguage": "Preferred language",
+    "description": "Set your default language for next visits."
+  },
+  "errors": {
+    "generic": "Something went wrong",
+    "authRequired": "Login required",
+    "network": "Network error. Please try again."
+  }
+}

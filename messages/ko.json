@@ -1,0 +1,85 @@
+{
+  "meta": {
+    "localeName": "한국어"
+  },
+  "common": {
+    "appName": "Now world is (NWI)",
+    "searchPlaceholder": "국가명, ISO 코드, 지역 검색...",
+    "map": "지도",
+    "globe": "지구본",
+    "login": "로그인",
+    "logout": "로그아웃",
+    "profile": "프로필",
+    "settings": "설정",
+    "favorites": "즐겨찾기",
+    "compare": "비교",
+    "language": "언어",
+    "loading": "불러오는 중...",
+    "notAvailable": "최신 데이터 없음",
+    "save": "저장",
+    "cancel": "취소"
+  },
+  "map": {
+    "hoverHint": "국가에 마우스를 올리거나 포커스로 미리보기. 모바일은 탭으로 확인.",
+    "sourceNote": "경제 지표 출처: World Bank (최신 연도 기준)",
+    "mobileHint": "국가를 탭하면 상세 시트가 열립니다",
+    "tooltipGdp": "1인당 GDP",
+    "tooltipPpp": "PPP 1인당 GDP",
+    "tooltipYear": "기준연도",
+    "avgIq": "평균 IQ"
+  },
+  "country": {
+    "heroRegion": "지역",
+    "heroCapital": "수도",
+    "heroPopulation": "인구",
+    "economy": "경제",
+    "gdp": "1인당 GDP",
+    "ppp": "PPP 1인당 GDP",
+    "iq": "평균 IQ",
+    "iqSource": "IQ 출처 노트",
+    "languages": "언어",
+    "currency": "통화",
+    "history": "역사",
+    "politics": "정치 / 정부",
+    "demographics": "인구구성",
+    "demographicsUnavailable": "민족 구성 데이터는 일관되게 제공되지 않습니다",
+    "majorCities": "주요 도시",
+    "photos": "대표 이미지",
+    "photoUnavailable": "이미지 없음",
+    "notes": "참고"
+  },
+  "compare": {
+    "title": "국가 비교 랩",
+    "subtitle": "즐겨찾기 국가를 선택해 GDP, PPP, IQ를 표와 그래프로 비교하세요.",
+    "countrySelection": "국가 선택",
+    "metricSelection": "지표 선택",
+    "run": "비교하기",
+    "lineChart": "연도별 추이",
+    "table": "연도별 표",
+    "iqStatic": "평균 IQ 비교",
+    "iqStaticNote": "IQ는 연도별 시계열이 아닌 정적 벤치마크로 표시됩니다.",
+    "noData": "비교할 수 있는 데이터가 부족합니다."
+  },
+  "favorites": {
+    "title": "즐겨찾기",
+    "subtitle": "관심 국가를 고정하고 비교 분석으로 이동하세요.",
+    "empty": "아직 즐겨찾기한 국가가 없습니다.",
+    "compareAction": "비교 페이지로 이동"
+  },
+  "profile": {
+    "title": "프로필",
+    "signedInAs": "로그인 계정",
+    "notSignedIn": "로그인되지 않음",
+    "manage": "계정 관리"
+  },
+  "settings": {
+    "title": "설정",
+    "preferredLanguage": "기본 언어",
+    "description": "다음 방문부터 적용할 기본 언어를 설정하세요."
+  },
+  "errors": {
+    "generic": "문제가 발생했습니다",
+    "authRequired": "로그인이 필요합니다",
+    "network": "네트워크 오류입니다. 다시 시도해주세요."
+  }
+}

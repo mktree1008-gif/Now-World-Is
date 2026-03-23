@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#0A1421"/>
+  <rect x="120" y="120" width="960" height="560" rx="28" fill="#162A40"/>
+  <path d="M180 560L380 360L510 470L700 300L920 560H180Z" fill="#1E3A5A"/>
+  <text x="150" y="680" fill="#83B4DB" font-size="40" font-family="Arial">Awaiting curated source image</text>
+</svg>

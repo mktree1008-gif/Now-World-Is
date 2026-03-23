@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/woff2/PretendardVariable.woff2')
+    format('woff2-variations');
+}
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  border-color: rgb(39 64 95 / 45%);
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family:
+    'Pretendard Variable',
+    'Pretendard',
+    var(--font-inter),
+    'Inter',
+    var(--font-noto-sans),
+    'Noto Sans',
+    system-ui,
+    sans-serif;
+  background:
+    radial-gradient(60rem 30rem at 20% -20%, rgb(14 37 68 / 40%), transparent 70%),
+    radial-gradient(55rem 35rem at 85% 10%, rgb(9 58 84 / 35%), transparent 60%),
+    linear-gradient(165deg, #040910 0%, #050b13 55%, #071223 100%);
+  color: #eef4ff;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+input,
+select,
+textarea,
+label,
+th,
+.nwi-ui,
+.nwi-heading {
+  font-family:
+    var(--font-inter),
+    'Inter',
+    'Pretendard Variable',
+    'Pretendard',
+    var(--font-noto-sans),
+    'Noto Sans',
+    system-ui,
+    sans-serif;
+  letter-spacing: -0.01em;
+}
+
+:lang(ko) {
+  word-break: keep-all;
+}
+
+.nwi-panel {
+  background: linear-gradient(180deg, rgb(12 22 36 / 86%) 0%, rgb(9 17 28 / 92%) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgb(56 86 120 / 48%);
+}
+
+.nwi-focus {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
+.map-shell {
+  background:
+    linear-gradient(160deg, rgb(5 11 19 / 92%), rgb(7 20 34 / 82%)),
+    radial-gradient(circle at 25% 15%, rgb(56 189 248 / 12%), transparent 40%);
+}
+
+.metric-digit {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+  font-family:
+    var(--font-inter),
+    'Inter',
+    'Pretendard Variable',
+    'Pretendard',
+    var(--font-noto-sans),
+    'Noto Sans',
+    system-ui,
+    sans-serif;
+}

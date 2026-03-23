@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#0B1626"/>
+  <circle cx="260" cy="210" r="140" fill="#1B3657"/>
+  <rect x="120" y="420" width="960" height="240" rx="24" fill="#13283F"/>
+  <text x="120" y="730" fill="#8BB8DF" font-size="42" font-family="Arial">Photo unavailable</text>
+</svg>

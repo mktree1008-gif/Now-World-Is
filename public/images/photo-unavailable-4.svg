@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#070F19"/>
+  <rect x="100" y="100" width="1000" height="600" rx="30" fill="#12263D"/>
+  <circle cx="300" cy="300" r="95" fill="#295376"/>
+  <rect x="440" y="230" width="520" height="70" rx="12" fill="#244867"/>
+  <rect x="440" y="340" width="420" height="50" rx="12" fill="#1D3D5A"/>
+  <text x="140" y="740" fill="#84B3D9" font-size="38" font-family="Arial">Photo unavailable - add API keys for real imagery</text>
+</svg>
