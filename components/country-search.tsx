@@ -39,7 +39,7 @@ export function CountrySearch({
   return (
     <div className="relative w-full max-w-xl">
       <label className="sr-only">Country search</label>
-      <div className="flex items-center gap-2 rounded-xl border border-nwi-border bg-[#081321]/90 px-3 py-2">
+      <div className="flex items-center gap-2 rounded-xl border border-[#2f456a] bg-[#0a1528]/85 px-3 py-2.5">
         <Search className="h-4 w-4 text-nwi-muted" />
         <input
           value={query}
@@ -55,7 +55,7 @@ export function CountrySearch({
 
       <div
         className={cn(
-          'absolute left-0 right-0 top-[calc(100%+8px)] z-30 overflow-hidden rounded-xl border border-nwi-border bg-[#081321] transition',
+          'absolute left-0 right-0 top-[calc(100%+8px)] z-30 overflow-hidden rounded-xl border border-[#2f456a] bg-[#0a1528]/95 backdrop-blur-md transition',
           open ? 'opacity-100' : 'pointer-events-none opacity-0'
         )}
       >
@@ -63,7 +63,7 @@ export function CountrySearch({
           <button
             type="button"
             key={country.iso2}
-            className="flex w-full items-center gap-2 border-b border-nwi-border/60 px-3 py-2 text-left text-sm hover:bg-sky-500/10"
+            className="flex w-full items-center gap-2 border-b border-[#223753] px-3 py-2 text-left text-sm hover:bg-cyan-500/10"
             onClick={() => {
               onPick(country);
               setQuery(country.localizedName);

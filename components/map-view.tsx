@@ -2,6 +2,7 @@
 
 import {useMemo} from 'react';
 import {zoomIdentity} from 'd3-zoom';
+import {LocateFixed} from 'lucide-react';
 import {ComposableMap, Geographies, Geography, ZoomableGroup} from 'react-simple-maps';
 import type {CountrySummary} from '@/lib/types';
 import {WORLD_GEO_URL} from '@/lib/constants';
@@ -29,11 +30,11 @@ export function MapView({
   const mapByIso2 = useMemo(() => new Map(countries.map((country) => [country.iso2, country])), [countries]);
 
   return (
-    <div className="map-shell relative h-[58vh] min-h-[420px] overflow-hidden rounded-2xl border border-nwi-border">
-      <div className="absolute bottom-4 left-4 z-20 flex gap-2">
+    <div className="map-shell relative h-[58vh] min-h-[420px] overflow-hidden rounded-2xl border border-[#2b3f5f] bg-[#0a1323]">
+      <div className="absolute bottom-4 right-4 z-20 flex flex-col gap-2">
         <button
           type="button"
-          className="rounded-md border border-nwi-border bg-[#0a1320]/90 px-2 py-1 text-sm"
+          className="h-10 w-10 rounded-lg border border-[#2f4566] bg-[#132238]/90 text-xl text-nwi-text transition hover:border-cyan-300/40 hover:text-cyan-100"
           onClick={() => {
             const nextZoom = zoomIdentity.scale(viewState.zoom + 0.25).k;
             onViewStateChange({center: viewState.center, zoom: Math.min(nextZoom, 6)});
@@ -43,13 +44,21 @@ export function MapView({
         </button>
         <button
           type="button"
-          className="rounded-md border border-nwi-border bg-[#0a1320]/90 px-2 py-1 text-sm"
+          className="h-10 w-10 rounded-lg border border-[#2f4566] bg-[#132238]/90 text-xl text-nwi-text transition hover:border-cyan-300/40 hover:text-cyan-100"
           onClick={() => {
             const nextZoom = zoomIdentity.scale(viewState.zoom - 0.25).k;
             onViewStateChange({center: viewState.center, zoom: Math.max(nextZoom, 1)});
           }}
         >
           -
+        </button>
+        <button
+          type="button"
+          className="h-10 w-10 rounded-lg border border-[#2f4566] bg-[#132238]/90 text-nwi-text transition hover:border-cyan-300/40 hover:text-cyan-100"
+          onClick={() => onViewStateChange({center: [8, 18], zoom: 1.08})}
+          aria-label="Reset map position"
+        >
+          <LocateFixed className="mx-auto h-4 w-4" />
         </button>
       </div>
 
@@ -106,19 +115,19 @@ export function MapView({
                     }}
                     style={{
                       default: {
-                        fill: isSelected ? '#67d5ff' : isHovered ? '#4eb8df' : hasData ? '#1f3b5e' : '#142338',
-                        stroke: isSelected ? '#def5ff' : '#35587a',
-                        strokeWidth: isSelected ? 1.4 : 0.6,
+                        fill: isSelected ? '#54cdef' : isHovered ? '#3174a8' : hasData ? '#203c61' : '#142238',
+                        stroke: isSelected ? '#d6f5ff' : '#35557b',
+                        strokeWidth: isSelected ? 1.3 : 0.55,
                         outline: 'none'
                       },
                       hover: {
-                        fill: '#67d5ff',
-                        stroke: '#e3f6ff',
+                        fill: '#54cdef',
+                        stroke: '#d9f5ff',
                         strokeWidth: 1.2,
                         outline: 'none'
                       },
                       pressed: {
-                        fill: '#8ee4ff',
+                        fill: '#7ee0ff',
                         stroke: '#ffffff',
                         strokeWidth: 1.3,
                         outline: 'none'

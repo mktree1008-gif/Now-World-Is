@@ -45,8 +45,8 @@ export function GlobalCountrySearch() {
   }, [locale, query]);
 
   return (
-    <div className="relative hidden w-full max-w-md lg:block">
-      <div className="flex items-center gap-2 rounded-lg border border-nwi-border bg-[#0a1524] px-3 py-1.5">
+    <div className="relative hidden w-full max-w-sm lg:block">
+      <div className="flex items-center gap-2 rounded-lg border border-[#2f415d] bg-[#0a1220]/90 px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
         <Search className="h-4 w-4 text-nwi-muted" />
         <input
           value={query}
@@ -61,14 +61,14 @@ export function GlobalCountrySearch() {
       </div>
 
       {open ? (
-        <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-30 overflow-hidden rounded-xl border border-nwi-border bg-[#0a1524]">
+        <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-30 overflow-hidden rounded-xl border border-[#2f415d] bg-[#0a1220]/95 backdrop-blur-md">
           {loading ? <p className="px-3 py-2 text-xs text-nwi-muted">{t('loading')}</p> : null}
           {!loading && !items.length ? <p className="px-3 py-2 text-xs text-nwi-muted">No matches</p> : null}
           {items.map((item) => (
             <button
               type="button"
               key={item.iso2}
-              className="flex w-full items-center gap-2 border-b border-nwi-border/60 px-3 py-2 text-left text-sm hover:bg-sky-500/10"
+              className="flex w-full items-center gap-2 border-b border-[#1e304a] px-3 py-2 text-left text-sm hover:bg-cyan-400/10"
               onClick={() => {
                 router.push(`/?country=${item.iso2}`);
                 setOpen(false);

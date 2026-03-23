@@ -92,8 +92,13 @@ th,
 
 .map-shell {
   background:
-    linear-gradient(160deg, rgb(5 11 19 / 92%), rgb(7 20 34 / 82%)),
-    radial-gradient(circle at 25% 15%, rgb(56 189 248 / 12%), transparent 40%);
+    linear-gradient(165deg, rgb(7 14 28 / 95%), rgb(10 20 38 / 88%)),
+    radial-gradient(circle at 20% 15%, rgb(76 215 246 / 10%), transparent 46%);
+}
+
+.intel-grid {
+  background-image: radial-gradient(circle at 2px 2px, rgb(76 215 246 / 7%) 1px, transparent 0);
+  background-size: 30px 30px;
 }
 
 .metric-digit {

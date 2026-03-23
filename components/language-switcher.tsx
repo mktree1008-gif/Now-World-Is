@@ -1,6 +1,7 @@
 'use client';
 
 import {useTransition} from 'react';
+import {ChevronDown, Languages} from 'lucide-react';
 import {useLocale, useTranslations} from 'next-intl';
 import {routing} from '@/i18n/routing';
 import {usePathname, useRouter} from '@/i18n/navigation';
@@ -17,11 +18,11 @@ export function LanguageSwitcher() {
   const [pending, startTransition] = useTransition();
 
   return (
-    <label className="inline-flex items-center gap-2 text-xs text-nwi-muted">
-      <span className="hidden md:inline">{t('language')}</span>
+    <label className="relative inline-flex items-center gap-2 rounded-lg border border-[#2f415d] bg-[#0a1220]/90 px-2.5 py-1.5 text-xs text-nwi-muted hover:border-[#3e5b84]">
+      <Languages className="h-4 w-4 text-cyan-300" />
       <select
         aria-label={t('language')}
-        className="rounded-md border border-nwi-border bg-nwi-panel px-2 py-1 text-sm text-nwi-text"
+        className="appearance-none bg-transparent pr-5 text-sm text-nwi-text outline-none"
         value={locale}
         disabled={pending}
         onChange={(event) => {
@@ -41,6 +42,7 @@ export function LanguageSwitcher() {
           </option>
         ))}
       </select>
+      <ChevronDown className="pointer-events-none absolute right-2 h-3.5 w-3.5 text-nwi-muted" />
     </label>
   );
 }

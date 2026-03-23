@@ -58,7 +58,7 @@ export function GlobeView({countries, hoveredIso2, selectedIso2, onHover, onSele
   return (
     <div
       ref={wrapperRef}
-      className="map-shell relative h-[58vh] min-h-[420px] overflow-hidden rounded-2xl border border-nwi-border"
+      className="map-shell relative h-[58vh] min-h-[420px] overflow-hidden rounded-2xl border border-[#2b3f5f] bg-[#0a1323]"
       onPointerMove={(event) => {
         pointerRef.current = {x: event.clientX, y: event.clientY};
       }}

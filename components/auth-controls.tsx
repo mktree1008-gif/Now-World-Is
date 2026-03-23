@@ -1,7 +1,7 @@
 'use client';
 
 import {useState} from 'react';
-import {LogIn, LogOut, UserRound} from 'lucide-react';
+import {LogIn, LogOut} from 'lucide-react';
 import {useTranslations} from 'next-intl';
 import {useAuth} from '@/lib/hooks/use-auth';
 import {Link} from '@/i18n/navigation';
@@ -19,22 +19,25 @@ export function AuthControls() {
   }
 
   if (user) {
+    const initial = (user.email?.[0] ?? 'U').toUpperCase();
     return (
       <div className="flex items-center gap-2">
         <Link
           href={{pathname: '/profile'}}
-          className="inline-flex items-center gap-1 rounded-md border border-nwi-border bg-nwi-panel px-3 py-1.5 text-sm hover:border-sky-400"
+          className="inline-flex items-center gap-2 rounded-lg border border-[#2f415d] bg-[#0a1220]/90 px-2 py-1.5 text-sm hover:border-[#4b6b97]"
         >
-          <UserRound className="h-4 w-4" />
-          <span className="max-w-[9rem] truncate">{user.email ?? t('profile')}</span>
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#f3d5c1] text-xs font-semibold text-[#1f2432]">
+            {initial}
+          </span>
+          <span className="max-w-[7rem] truncate text-xs text-nwi-text">{user.email ?? t('profile')}</span>
         </Link>
         <button
           type="button"
           onClick={() => signOut()}
-          className="inline-flex items-center gap-1 rounded-md border border-nwi-border px-2 py-1.5 text-sm text-nwi-muted hover:text-nwi-text"
+          className="inline-flex items-center gap-1 rounded-lg border border-[#2f415d] bg-[#0a1220]/90 px-2 py-1.5 text-sm text-nwi-muted hover:text-nwi-text"
         >
           <LogOut className="h-4 w-4" />
-          <span className="hidden md:inline">{t('logout')}</span>
+          <span className="hidden lg:inline">{t('logout')}</span>
         </button>
       </div>
     );
@@ -45,10 +48,10 @@ export function AuthControls() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex min-w-[92px] items-center justify-center gap-1 whitespace-nowrap rounded-md border border-nwi-border bg-nwi-panel px-3 py-1.5 text-sm hover:border-sky-400"
+        className="inline-flex min-w-[94px] items-center justify-center gap-1 rounded-lg border border-[#2f415d] bg-[#0a1220]/90 px-2.5 py-1.5 text-sm text-nwi-text hover:border-[#4b6b97]"
       >
-        <LogIn className="h-4 w-4" />
-        <span className="whitespace-nowrap">{t('login')}</span>
+        <LogIn className="h-4 w-4 text-cyan-300" />
+        <span className="whitespace-nowrap text-sm">{t('login')}</span>
       </button>
 
       <div

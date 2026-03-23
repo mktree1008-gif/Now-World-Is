@@ -1,25 +1,45 @@
 'use client';
 
+import {useEffect, useRef} from 'react';
 import {AnimatePresence, motion} from 'framer-motion';
-import {X} from 'lucide-react';
+import {TrendingUp, X} from 'lucide-react';
 import Image from 'next/image';
 import {useTranslations} from 'next-intl';
 import type {CountrySummary} from '@/lib/types';
 import {useCountryDetail} from '@/lib/hooks/use-country-detail';
+import {useCountryGrowth} from '@/lib/hooks/use-country-growth';
 import {formatCurrencyValue, formatNumber} from '@/lib/utils/format';
 import {FavoriteToggle} from '@/components/favorite-toggle';
+
+type Lens = 'profile' | 'demographics' | 'economics' | 'politics' | 'history' | 'trade';
 
 type Props = {
   open: boolean;
   locale: string;
   summary: CountrySummary | null;
+  activeLens?: Lens;
   onClose: () => void;
 };
 
-export function CountryDetailDrawer({open, locale, summary, onClose}: Props) {
+export function CountryDetailDrawer({open, locale, summary, activeLens, onClose}: Props) {
   const tCountry = useTranslations('country');
   const {data, isLoading} = useCountryDetail(summary?.iso3 ?? null, locale);
+  const {data: growthData} = useCountryGrowth(summary?.iso2 ?? null, locale);
   const detail = data;
+  const asideRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!open || !activeLens || !asideRef.current) {
+      return;
+    }
+
+    const target = asideRef.current.querySelector(`[data-lens="${activeLens}"]`);
+    if (target instanceof HTMLElement) {
+      target.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+  }, [activeLens, open, detail?.iso2]);
+
+  const growth = growthData?.gdpGrowth ?? growthData?.pppGrowth ?? null;
 
   return (
     <AnimatePresence>
@@ -34,6 +54,7 @@ export function CountryDetailDrawer({open, locale, summary, onClose}: Props) {
             className="fixed inset-0 z-40 bg-black/55"
           />
           <motion.aside
+            ref={asideRef}
             initial={{x: 420}}
             animate={{x: 0}}
             exit={{x: 420}}
@@ -84,7 +105,7 @@ export function CountryDetailDrawer({open, locale, summary, onClose}: Props) {
               </div>
             ) : (
               <div className="space-y-4">
-                <section>
+                <section data-lens="profile">
                   <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-cyan-100">{tCountry('photos')}</h3>
                   <div className="grid grid-cols-2 gap-2">
                     {detail.photoItems.slice(0, 4).map((photo) => (
@@ -101,7 +122,7 @@ export function CountryDetailDrawer({open, locale, summary, onClose}: Props) {
                   </div>
                 </section>
 
-                <section className="rounded-xl border border-nwi-border bg-[#0c1928] p-3">
+                <section data-lens="economics" className="rounded-xl border border-nwi-border bg-[#0c1928] p-3">
                   <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-cyan-100">{tCountry('economy')}</h3>
                   <p className="metric-digit text-sm text-nwi-text">
                     {tCountry('gdp')}: {formatCurrencyValue(detail.economy.gdpPerCapita, locale)} ({detail.economy.gdpPerCapitaYear ?? 'N/A'})
@@ -116,10 +137,14 @@ export function CountryDetailDrawer({open, locale, summary, onClose}: Props) {
                   <p className="metric-digit text-sm text-nwi-text">
                     {tCountry('iq')}: {detail.averageIq ?? 'N/A'} {detail.averageIqYear ? `(${detail.averageIqYear})` : ''}
                   </p>
+                  <p className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-[#102338] px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#f7bf77]">
+                    <TrendingUp className="h-3 w-3" />
+                    {growth ? `${growth.value >= 0 ? '+' : ''}${growth.value.toFixed(1)}% annual growth` : 'Annual growth unavailable'}
+                  </p>
                   {detail.averageIqSource ? <p className="mt-1 text-[11px] text-nwi-muted">{detail.averageIqSource}</p> : null}
                 </section>
 
-                <section className="grid grid-cols-2 gap-2 text-xs text-nwi-muted">
+                <section data-lens="trade" className="grid grid-cols-2 gap-2 text-xs text-nwi-muted">
                   <div className="rounded-lg border border-nwi-border bg-[#0c1928] p-3">
                     {tCountry('heroPopulation')}
                     <p className="metric-digit mt-1 text-sm text-nwi-text">{formatNumber(detail.population ?? null, locale)}</p>
@@ -134,18 +159,18 @@ export function CountryDetailDrawer({open, locale, summary, onClose}: Props) {
                   </div>
                 </section>
 
-                <section className="rounded-xl border border-nwi-border bg-[#0c1928] p-3 text-sm text-nwi-muted">
+                <section data-lens="history" className="rounded-xl border border-nwi-border bg-[#0c1928] p-3 text-sm text-nwi-muted">
                   <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-cyan-100">{tCountry('history')}</h3>
                   <p>{detail.historySummary}</p>
                 </section>
 
-                <section className="rounded-xl border border-nwi-border bg-[#0c1928] p-3 text-sm text-nwi-muted">
+                <section data-lens="politics" className="rounded-xl border border-nwi-border bg-[#0c1928] p-3 text-sm text-nwi-muted">
                   <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-cyan-100">{tCountry('politics')}</h3>
                   <p>{detail.politicalSystem}</p>
                   <p className="mt-1">{detail.governmentType}</p>
                 </section>
 
-                <section className="rounded-xl border border-nwi-border bg-[#0c1928] p-3 text-sm text-nwi-muted">
+                <section data-lens="demographics" className="rounded-xl border border-nwi-border bg-[#0c1928] p-3 text-sm text-nwi-muted">
                   <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-cyan-100">{tCountry('demographics')}</h3>
                   {detail.ethnicComposition?.length ? (
                     <ul className="space-y-1">
