@@ -45,10 +45,10 @@ export function AuthControls() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-1 rounded-md border border-nwi-border bg-nwi-panel px-3 py-1.5 text-sm hover:border-sky-400"
+        className="inline-flex min-w-[92px] items-center justify-center gap-1 whitespace-nowrap rounded-md border border-nwi-border bg-nwi-panel px-3 py-1.5 text-sm hover:border-sky-400"
       >
         <LogIn className="h-4 w-4" />
-        {t('login')}
+        <span className="whitespace-nowrap">{t('login')}</span>
       </button>
 
       <div
