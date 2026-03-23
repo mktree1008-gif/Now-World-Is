@@ -18,7 +18,7 @@ const notoSans = Noto_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://nwi.world'),
-  title: 'Now world is (NWI) 2026',
+  title: 'Now world is (NWI)',
   description: 'Premium global intelligence atlas with multilingual map and globe views.',
   alternates: {
     canonical: 'https://nwi.world'

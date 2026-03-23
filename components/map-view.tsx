@@ -5,7 +5,7 @@ import {zoomIdentity} from 'd3-zoom';
 import {ComposableMap, Geographies, Geography, ZoomableGroup} from 'react-simple-maps';
 import type {CountrySummary} from '@/lib/types';
 import {WORLD_GEO_URL} from '@/lib/constants';
-import {resolveIso2ByName} from '@/lib/utils/country';
+import {resolveIso2FromGeo} from '@/lib/utils/country';
 
 type Props = {
   countries: CountrySummary[];
@@ -16,11 +16,6 @@ type Props = {
   viewState: {center: [number, number]; zoom: number};
   onViewStateChange: (next: {center: [number, number]; zoom: number}) => void;
 };
-
-function geoName(geo: Record<string, unknown>) {
-  const props = (geo.properties ?? {}) as Record<string, string>;
-  return props.name || props.NAME || props.admin || props.sovereignt || 'Unknown';
-}
 
 export function MapView({
   countries,
@@ -72,8 +67,7 @@ export function MapView({
           <Geographies geography={WORLD_GEO_URL}>
             {({geographies}) =>
               geographies.map((geo) => {
-                const countryName = geoName(geo as unknown as Record<string, unknown>);
-                const iso2 = resolveIso2ByName(countryName, countries);
+                const iso2 = resolveIso2FromGeo(geo as unknown as {id?: string | number; properties?: Record<string, unknown>}, countries);
                 const isSelected = iso2 ? selectedIso2 === iso2 : false;
                 const isHovered = iso2 ? hoveredIso2 === iso2 : false;
                 const hasData = iso2 ? mapByIso2.has(iso2) : false;

@@ -5,13 +5,14 @@ import {useEffect, useMemo, useRef, useState} from 'react';
 import type {GlobeMethods} from 'react-globe.gl';
 import type {CountrySummary} from '@/lib/types';
 import {WORLD_GEO_URL} from '@/lib/constants';
-import {resolveIso2ByName} from '@/lib/utils/country';
+import {resolveIso2FromGeo} from '@/lib/utils/country';
 
 const Globe = dynamic(() => import('react-globe.gl'), {ssr: false});
 
 type GeoFeature = {
   type: 'Feature';
   properties: Record<string, string>;
+  id?: string | number;
   geometry: unknown;
 };
 
@@ -22,16 +23,6 @@ type Props = {
   onHover: (iso2: string | null, x: number, y: number) => void;
   onSelect: (iso2: string) => void;
 };
-
-function nameFromFeature(feature: GeoFeature | null) {
-  if (!feature) {
-    return '';
-  }
-
-  return (
-    feature.properties.name || feature.properties.NAME || feature.properties.admin || feature.properties.sovereignt || ''
-  );
-}
 
 export function GlobeView({countries, hoveredIso2, selectedIso2, onHover, onSelect}: Props) {
   const globeRef = useRef<GlobeMethods>();
@@ -101,8 +92,7 @@ export function GlobeView({countries, hoveredIso2, selectedIso2, onHover, onSele
         bumpImageUrl="https://unpkg.com/three-globe/example/img/earth-topology.png"
         polygonsData={features}
         polygonCapColor={(feature: object) => {
-          const name = nameFromFeature(feature as GeoFeature);
-          const iso2 = resolveIso2ByName(name, countries);
+          const iso2 = resolveIso2FromGeo(feature as GeoFeature, countries);
 
           if (iso2 && selectedSet.has(iso2)) {
             return 'rgba(102, 217, 255, 0.85)';
@@ -117,21 +107,18 @@ export function GlobeView({countries, hoveredIso2, selectedIso2, onHover, onSele
         polygonSideColor={() => 'rgba(10, 20, 35, 0.45)'}
         polygonStrokeColor={() => 'rgba(137, 181, 219, 0.35)'}
         polygonAltitude={(feature: object) => {
-          const name = nameFromFeature(feature as GeoFeature);
-          const iso2 = resolveIso2ByName(name, countries);
+          const iso2 = resolveIso2FromGeo(feature as GeoFeature, countries);
           if (iso2 && selectedSet.has(iso2)) {
             return 0.014;
           }
           return 0.005;
         }}
         onPolygonHover={(feature: object | null) => {
-          const name = nameFromFeature(feature as GeoFeature | null);
-          const iso2 = name ? resolveIso2ByName(name, countries) : undefined;
+          const iso2 = feature ? resolveIso2FromGeo(feature as GeoFeature, countries) : undefined;
           onHover(iso2 ?? null, pointerRef.current.x, pointerRef.current.y);
         }}
         onPolygonClick={(feature: object) => {
-          const name = nameFromFeature(feature as GeoFeature);
-          const iso2 = resolveIso2ByName(name, countries);
+          const iso2 = resolveIso2FromGeo(feature as GeoFeature, countries);
           if (iso2) {
             onSelect(iso2);
           }

@@ -14,7 +14,7 @@ export function TopBar() {
     <header className="sticky top-0 z-40 border-b border-nwi-border bg-[#050b13]/90 backdrop-blur">
       <div className="mx-auto flex w-full max-w-[1440px] items-center gap-3 px-3 py-3 md:px-6">
         <Link href={{pathname: '/'}} className="mr-2 shrink-0 text-sm font-semibold tracking-[0.22em] text-cyan-200">
-          NWI_2026
+          NWI
         </Link>
         <GlobalCountrySearch />
 
